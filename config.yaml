@@ -4,7 +4,8 @@ behaviors:
     hyperparameters:
       batch_size: 64
       buffer_size: 2048
-      learning_rate: 0.0003
+      learning_rate: 0.001
+      beta: 0.05
     network_settings:
       hidden_units: 64
       num_layers: 2
@@ -12,6 +13,6 @@ behaviors:
       extrinsic:
         gamma: 0.99
         strength: 1.0
-    max_steps: 15000000
+    max_steps: 25000000
     checkpoint_interval: 50000
     time_horizon: 64

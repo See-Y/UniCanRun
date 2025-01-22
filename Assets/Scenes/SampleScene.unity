@@ -264,9 +264,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1150430019096867106, guid: 68cbe1dfcab911f47b6f7f2b78a8bc28, type: 3}
+      propertyPath: m_AngularYLimit.limit
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2100908203241194469, guid: 68cbe1dfcab911f47b6f7f2b78a8bc28, type: 3}
+      propertyPath: m_AngularYLimit.limit
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977833600694260732, guid: 68cbe1dfcab911f47b6f7f2b78a8bc28, type: 3}
+      propertyPath: m_AngularYLimit.limit
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3415225339589465107, guid: 68cbe1dfcab911f47b6f7f2b78a8bc28, type: 3}
       propertyPath: m_Name
       value: Testbed
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872797760920017067, guid: 68cbe1dfcab911f47b6f7f2b78a8bc28, type: 3}
+      propertyPath: m_AngularYLimit.limit
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8759963884057116149, guid: 68cbe1dfcab911f47b6f7f2b78a8bc28, type: 3}
       propertyPath: m_LocalPosition.x

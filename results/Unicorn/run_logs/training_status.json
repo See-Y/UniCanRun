@@ -1,0 +1,65 @@
+{
+    "Unicorn": {
+        "checkpoints": [
+            {
+                "steps": 8749999,
+                "file_path": "results\\Unicorn\\Unicorn\\Unicorn-8749999.onnx",
+                "reward": 735.7820309230259,
+                "creation_time": 1737440205.2458339,
+                "auxillary_file_paths": [
+                    "results\\Unicorn\\Unicorn\\Unicorn-8749999.pt"
+                ]
+            },
+            {
+                "steps": 8780177,
+                "file_path": "results\\Unicorn\\Unicorn\\Unicorn-8780177.onnx",
+                "reward": 359.61100019257645,
+                "creation_time": 1737440446.5209324,
+                "auxillary_file_paths": [
+                    "results\\Unicorn\\Unicorn\\Unicorn-8780177.pt"
+                ]
+            },
+            {
+                "steps": 8799996,
+                "file_path": "results\\Unicorn\\Unicorn\\Unicorn-8799996.onnx",
+                "reward": 325.2810380458832,
+                "creation_time": 1737440734.9580307,
+                "auxillary_file_paths": [
+                    "results\\Unicorn\\Unicorn\\Unicorn-8799996.pt"
+                ]
+            },
+            {
+                "steps": 8849958,
+                "file_path": "results\\Unicorn\\Unicorn\\Unicorn-8849958.onnx",
+                "reward": 423.2320526123047,
+                "creation_time": 1737441215.788256,
+                "auxillary_file_paths": [
+                    "results\\Unicorn\\Unicorn\\Unicorn-8849958.pt"
+                ]
+            },
+            {
+                "steps": 8873339,
+                "file_path": "results\\Unicorn\\Unicorn\\Unicorn-8873339.onnx",
+                "reward": 785.4274849891663,
+                "creation_time": 1737441562.6631904,
+                "auxillary_file_paths": [
+                    "results\\Unicorn\\Unicorn\\Unicorn-8873339.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 8873339,
+            "file_path": "results\\Unicorn\\Unicorn.onnx",
+            "reward": 785.4274849891663,
+            "creation_time": 1737441562.6631904,
+            "auxillary_file_paths": [
+                "results\\Unicorn\\Unicorn\\Unicorn-8873339.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.11.0+cpu"
+    }
+}

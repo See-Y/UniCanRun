@@ -22,9 +22,9 @@ pytorch 1.11.0
 
 새로운 바람이 불어올 때가 되었다.
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/3295ccc7-51f8-4095-8c01-90ff00d37b06/image.png)
+![윤이.jpg](윤이.jpg)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/397cc4fb-007e-457b-90bb-cf12894553fa/image.png)
+![넙죽이.jpeg](넙죽이.jpeg)
 
 지겨워진 넙죽이를 잡기 위해 유니스트 마스코트 ‘윤이’를 데려온다.
 
@@ -36,7 +36,7 @@ unity mlagent를 이용해 걷는 방법을 학습시킨다
 
 ## 강화학습
 
-[몰입캠프 비디오  (1).mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/31203a96-4f20-4d29-9c9a-0df92e13af24/%EB%AA%B0%EC%9E%85%EC%BA%A0%ED%94%84_%EB%B9%84%EB%94%94%EC%98%A4__(1).mp4)
+[몰입캠프 비디오  (1).mp4](몰입캠프 비디오  (1).mp4)
 
 보상 함수 요약
 

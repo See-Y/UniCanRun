@@ -2,6 +2,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using System.Collections;
 
 public class QuadrupedAgent : Agent
 {
@@ -24,8 +25,8 @@ public class QuadrupedAgent : Agent
     {
         // 타겟 움직임 업데이트
         float time = Time.time;
-        float xOffset = Mathf.Sin(time * 0.5f) * 3f; // X축 움직임
-        float zOffset = Mathf.Cos(time * 0.3f) * 3f; // Z축 움직임
+        float xOffset = Mathf.Sin(time * 0.0f) * 2f; // X축 움직임
+        float zOffset = Mathf.Cos(time * 0.0f) * 2f; // Z축 움직임
         
         Vector3 basePosition = new Vector3(-45f, 0.5f, 0f);
         target.position = basePosition + new Vector3(xOffset, 0f, zOffset);
@@ -44,36 +45,63 @@ public class QuadrupedAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        Debug.Log("OnEpisodeBegin");
-        // 물리 초기화
+        // 1. 물리 초기화 순서 변경
+        foreach (var thigh in thighs)
+        {
+            var rb = thigh.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+        }
+        foreach (var shin in shins)
+        {
+            var rb = shin.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+        }
+
+        // 2. 메인 바디 초기화
         body.linearVelocity = Vector3.zero;
         body.angularVelocity = Vector3.zero;
         
-        // 에이전트 초기 위치 (x: 45)
-        body.MovePosition(new Vector3(45f, 1, 0));
+        // 3. 위치와 회전 초기화 (한 프레임 대기)
+        StartCoroutine(DelayedPositionReset());
+    }
+
+    private IEnumerator DelayedPositionReset()
+    {
+        // 한 물리 프레임 대기
+        yield return new WaitForFixedUpdate();
         
-        // 회전 초기화 (180도 고정)
+        // 위치 초기화
+        body.MovePosition(new Vector3(45f, 1, 0));
         body.MoveRotation(Quaternion.Euler(0, 180, 0));
         
         // 관절 초기화
         foreach (var thigh in thighs)
         {
             thigh.localRotation = Quaternion.Euler(0, 0, 90);
-            var rb = thigh.GetComponent<Rigidbody>();
-            if (rb != null) rb.angularVelocity = Vector3.zero;
+            var joint = thigh.GetComponent<ConfigurableJoint>();
+            if (joint != null)
+            {
+                joint.targetRotation = Quaternion.Euler(0, 0, 90);
+            }
         }
+        
         foreach (var shin in shins)
         {
             shin.localRotation = Quaternion.Euler(0, 0, 90);
-            var rb = shin.GetComponent<Rigidbody>();
-            if (rb != null) rb.angularVelocity = Vector3.zero;
+            var joint = shin.GetComponent<ConfigurableJoint>();
+            if (joint != null)
+            {
+                joint.targetRotation = Quaternion.Euler(0, 0, 90);
+            }
         }
-
-        // 타겟 위치 설정 (x: -45 근처, 총 거리 약 90)
-        target.position = new Vector3(-45f + Random.Range(-5f, 5f), 0.5f, Random.Range(-5f, 5f));
-
-        previousPosition = body.position;
-        noMovementTimer = 0f;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -140,7 +168,6 @@ public class QuadrupedAgent : Agent
         float tiltPenalty = Vector3.Dot(body.transform.up, Vector3.up);
         if(tiltPenalty <= 0.1f){
             AddReward(-1.0f);
-            Debug.Log("tiltPenalty");
             EndEpisode();
         }
         float tiltReward = Mathf.Exp((tiltPenalty - 1.0f)*5.0f) - Mathf.Exp(-1.0f*5.0f);
@@ -153,14 +180,13 @@ public class QuadrupedAgent : Agent
         float targetReward = dotProduct;  // -1 to 1 범위의 선형 보상
         if(dotProduct <= 0.2f){
             AddReward(-1.0f);
-            Debug.Log("target direction");
             //EndEpisode();
         }
         AddReward(targetReward * 0.5f);
         
         // 목표 방향으로의 이동 속도 보상
         float progressReward = Vector3.Dot(body.linearVelocity.normalized, targetDirection) * body.linearVelocity.magnitude;
-        AddReward(progressReward);  // 0.05f -> 0.01f
+        AddReward(progressReward*2.0f);  // 0.05f -> 0.01f
         //Debug.Log("progressReward: " + progressReward);
 
         // 거리에 따른 보상
@@ -175,7 +201,6 @@ public class QuadrupedAgent : Agent
             if (noMovementTimer >= NO_MOVEMENT_THRESHOLD)
             {
                 AddReward(-1f);  // 큰 페널티
-                Debug.Log("noMovement");
                 //EndEpisode();
                 return;
             }
@@ -210,12 +235,10 @@ public class QuadrupedAgent : Agent
         // 6. 실패 조건
         if (body.position.y < 0.5f || body.position.y > 1.5f){
             AddReward(-1f);
-            Debug.Log("body fall");
             EndEpisode();
         }
         if (distanceToTarget > 100f){
             SetReward(-1f);
-            Debug.Log("distanceToTarget out of range");
             EndEpisode();
         }
 
@@ -225,7 +248,6 @@ public class QuadrupedAgent : Agent
             if (thigh.localPosition.y < -1.4f)
             {
                 AddReward(-1f);
-                Debug.Log("thigh fall");
                 EndEpisode();
             }
         }

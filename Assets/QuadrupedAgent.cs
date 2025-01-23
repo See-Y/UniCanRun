@@ -138,29 +138,30 @@ public class QuadrupedAgent : Agent
 
         // 2. 균형 보상 (기존보다 강화)
         float tiltPenalty = Vector3.Dot(body.transform.up, Vector3.up);
-        if(tiltPenalty <= 0.3f){
-            SetReward(0.0f);
+        if(tiltPenalty <= 0.1f){
+            AddReward(-1.0f);
             Debug.Log("tiltPenalty");
             EndEpisode();
         }
-        // float tiltReward = Mathf.Exp((tiltPenalty - 1.0f)*5.0f) - Mathf.Exp(-1.0f*5.0f);
-        // AddReward(tiltReward * 0.005f);
+        float tiltReward = Mathf.Exp((tiltPenalty - 1.0f)*5.0f) - Mathf.Exp(-1.0f*5.0f);
+        AddReward(tiltReward * 0.5f);
 
         // 3. 진행 보상 (목표를 향한 이동)
         Vector3 targetDirection = (target.position - body.position).normalized;
         // 목표 방향에 대한 보상
         float dotProduct = Vector3.Dot(body.transform.right, targetDirection);  // forward 대신 -right 사용
         float targetReward = dotProduct;  // -1 to 1 범위의 선형 보상
-        if(dotProduct <= 0.5f){
-            SetReward(-1.0f);
+        if(dotProduct <= 0.2f){
+            AddReward(-1.0f);
             Debug.Log("target direction");
-            EndEpisode();
+            //EndEpisode();
         }
-        AddReward(targetReward * 0.005f);
+        AddReward(targetReward * 0.5f);
         
         // 목표 방향으로의 이동 속도 보상
         float progressReward = Vector3.Dot(body.linearVelocity.normalized, targetDirection) * body.linearVelocity.magnitude;
         AddReward(progressReward);  // 0.05f -> 0.01f
+        //Debug.Log("progressReward: " + progressReward);
 
         // 거리에 따른 보상
         float distanceToTarget = Vector3.Distance(body.position, target.position);
@@ -175,7 +176,7 @@ public class QuadrupedAgent : Agent
             {
                 AddReward(-1f);  // 큰 페널티
                 Debug.Log("noMovement");
-                EndEpisode();
+                //EndEpisode();
                 return;
             }
         }
@@ -187,28 +188,28 @@ public class QuadrupedAgent : Agent
 
 
         // 4. 에너지 효율성 보상 (과도한 동작 억제)
-        float energyPenalty = 0f;
-        foreach (var thigh in thighs)
-        {
-            energyPenalty += thigh.GetComponent<Rigidbody>().angularVelocity.magnitude;
-            break;
-        }
-        foreach (var shin in shins)
-        {
-            energyPenalty += shin.GetComponent<Rigidbody>().angularVelocity.magnitude;
-            break;
-        }
-        AddReward(energyPenalty);
+        // float energyPenalty = 0f;
+        // foreach (var thigh in thighs)
+        // {
+        //     energyPenalty += thigh.GetComponent<Rigidbody>().angularVelocity.magnitude;
+        //     break;
+        // }
+        // foreach (var shin in shins)
+        // {
+        //     energyPenalty += shin.GetComponent<Rigidbody>().angularVelocity.magnitude;
+        //     break;
+        // }
+        // AddReward(energyPenalty);
 
         // 5. 목표 도달 보상 (성공)
         if (distanceToTarget < 1.0f){
-            AddReward(1.0f);
+            AddReward(10.0f);
             EndEpisode();
         }
 
         // 6. 실패 조건
-        if (body.position.y < 0.3f || body.position.y > 1.5f){
-            SetReward(-1f);
+        if (body.position.y < 0.5f || body.position.y > 1.5f){
+            AddReward(-1f);
             Debug.Log("body fall");
             EndEpisode();
         }
@@ -216,6 +217,17 @@ public class QuadrupedAgent : Agent
             SetReward(-1f);
             Debug.Log("distanceToTarget out of range");
             EndEpisode();
+        }
+
+        // thigh의 y가 -1.4보다 작으면 실패
+        foreach (var thigh in thighs)
+        {
+            if (thigh.localPosition.y < -1.4f)
+            {
+                AddReward(-1f);
+                Debug.Log("thigh fall");
+                EndEpisode();
+            }
         }
     }
 }

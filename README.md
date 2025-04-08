@@ -52,6 +52,8 @@ unity mlagent를 이용해 걷는 방법을 학습시킨다
 
 [KillNupjuk.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/94f0b809-f768-4916-8a0d-31fba34968a3/KillNupjuk.mp4)
 
+https://drive.google.com/file/d/1G4L9oQu2uakjFHdVE0DKq3H_wD4g9WzY/view?usp=sharing
+
 ---
 
 ## 추후에 도전하실 분들을 위한 팁
